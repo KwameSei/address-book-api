@@ -1,11 +1,10 @@
 development:
   adapter: postgresql
   encoding: unicode
-  host: "localhost"
-  port: 5432
-  database: "api_address_book"
-  username: "postgres"
-  password: "1234"
-  prepared_statements: false
-  pool: 10
-  timeout: 160
+  host: <%= ENV["DB_HOST"] %>
+  port: <%= ENV["DB_PORT"] %>
+  database: <%= ENV["DB_NAME"] %>
+  username: <%= ENV["DB_USERNAME"] %>
+  password: <%= ENV["DB_PASSWORD"] %>
+  pool: <%= ENV["DB_POOL"] || 2 %>
+  timeout: <%= ENV["DB_TIMEOUT"] || 160 %>
