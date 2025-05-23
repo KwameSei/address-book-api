@@ -9,7 +9,11 @@ module CustomCode
     users_retrieved:           { code: 2050, message: "Users successfuly retrieved" },
     contacts_retrieved:           { code: 2060, message: "Contacts successfuly retrieved" },
     contact_retrieved:           { code: 2070, message: "Contact successfuly retrieved" },
-    no_content:          { code: 2060, message: "No resource found" },
+    contact_updated:  {code: 2080, message: "Contact updated successfully"},
+    user_updated:   {code: 2090, message: "User updated successfully"},
+    contact_deleted:  {code: 2100, message: "Contact deleted successfully"},
+    user_deleted:   {code: 2101, message: "User deleted successfully"},
+    no_content:          { code: 2102, message: "No resource found" },
 
     # 1xxx: Client Errors
     bad_request:         { code: 1001, message: "Bad request" },

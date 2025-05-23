@@ -2,15 +2,16 @@ require_relative '../config/environment'
 
 class UsersController
   include ResponseHelper
+  include PaginationHelper
 
   def index(current_user, params)
-    page = (params[:page] || 1).to_i
-    limit = (params[:limit] || 10).to_i
+    # paginate users
+    data = paginate(User.all.order(created_at: :desc), request.params)
+    
+    # serialized_users = users.map { |user| UserSerializer.serialize(user) }
+    serialized_users = data[:records].map { |user| UserSerializer.serialize(user)}
 
-    users = User.limit(limit).offset((page - 1) * limit)
-    serialized_users = users.map { |user| UserSerializer.serialize(user) }
-
-    json_response(http_status: 200, custom_status: :users_retrieved, data: serialized_users)
+    json_response(http_status: 200, custom_status: :users_retrieved, data: { users: serialized_users, pagination: data[:meta]})
   end
 
   def show(current_user, id)
@@ -49,7 +50,7 @@ class UsersController
 
     data = JSON.parse(request.body.read) rescue {}
     if user.update(name: data['name'], email: data['email'], password: data['password'])
-      json_response(http_status: 200, custom_status: :updated, data: user)
+      json_response(http_status: 200, custom_status: :user_updated, data: user)
     else
       bad_request_response(user.errors.full_messages.join(', '))
     end
@@ -60,6 +61,6 @@ class UsersController
     return not_found_response('user not found') unless user
 
     user.destroy
-    json_response(http_status: 200, custom_status: :deleted, data: user)
+    json_response(http_status: 200, custom_status: :user_deleted, data: user)
   end
 end
